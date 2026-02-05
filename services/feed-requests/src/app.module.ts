@@ -19,8 +19,12 @@ export class AppModule implements OnApplicationShutdown {
   static _forCommon(): DynamicModule {
     const configVals = config();
     const replicaUris: string[] = [];
+    const dbType = configVals.FEED_REQUESTS_DB_TYPE || 'postgresql';
 
-    const replica1 = configVals.FEED_REQUESTS_POSTGRES_REPLICA1_URI;
+    const replica1 =
+      dbType === 'postgresql'
+        ? configVals.FEED_REQUESTS_POSTGRES_REPLICA1_URI
+        : undefined;
 
     if (replica1) {
       replicaUris.push(replica1);
@@ -40,17 +44,20 @@ export class AppModule implements OnApplicationShutdown {
           entities: ['dist/**/*.entity.js'],
           entitiesTs: ['src/**/*.entity.ts'],
           clientUrl: configVals.FEED_REQUESTS_POSTGRES_URI,
-          type: 'postgresql',
+          type: dbType,
           forceUtcTimezone: true,
           timezone: 'UTC',
           // loadStrategy: LoadStrategy.JOINED,
           pool: {
             min: 0,
           },
-          preferReadReplicas: replicaUris.length > 0,
-          replicas: replicaUris.map((url) => ({
-            clientUrl: url,
-          })),
+          preferReadReplicas: dbType === 'postgresql' && replicaUris.length > 0,
+          replicas:
+            dbType === 'postgresql'
+              ? replicaUris.map((url) => ({
+                  clientUrl: url,
+                }))
+              : [],
         }),
       ],
     };

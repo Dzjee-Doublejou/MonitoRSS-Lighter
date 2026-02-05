@@ -18,6 +18,11 @@ export enum Environment {
   Test = "test",
 }
 
+export enum DatabaseType {
+  Postgres = "postgresql",
+  MariaDB = "mariadb",
+}
+
 export class EnvironmentVariables {
   @IsEnum(Environment)
   NODE_ENV: Environment;
@@ -38,6 +43,10 @@ export class EnvironmentVariables {
 
   @IsString()
   USER_FEEDS_POSTGRES_URI: string;
+
+  @IsEnum(DatabaseType)
+  @IsOptional()
+  USER_FEEDS_DB_TYPE?: DatabaseType;
 
   @IsString()
   USER_FEEDS_POSTGRES_DATABASE: string;

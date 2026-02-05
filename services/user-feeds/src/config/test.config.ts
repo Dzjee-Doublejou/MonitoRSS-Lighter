@@ -7,6 +7,7 @@ export function testConfig(): EnvironmentVariables {
     USER_FEEDS_POSTGRES_URI:
       process.env.USER_FEEDS_POSTGRES_URI ||
       "postgres://postgres:12345@localhost:5432/test",
+    USER_FEEDS_DB_TYPE: "postgresql",
     USER_FEEDS_API_KEY: "123456789",
     USER_FEEDS_API_PORT: "3000",
     USER_FEEDS_FEED_REQUESTS_API_URL: "http://feed-request-service:5000",

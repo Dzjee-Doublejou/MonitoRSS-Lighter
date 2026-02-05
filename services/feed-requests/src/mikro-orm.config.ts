@@ -3,14 +3,14 @@ import config from './config';
 
 const configVals = config();
 
-const postgresUri = configVals.FEED_REQUESTS_POSTGRES_URI;
-const dbName = postgresUri.split('/').pop();
+const dbUri = configVals.FEED_REQUESTS_POSTGRES_URI;
+const dbName = dbUri.split('/').pop();
 
 const MikroOrmConfig: Options = {
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
-  clientUrl: configVals.FEED_REQUESTS_POSTGRES_URI,
-  type: 'postgresql',
+  clientUrl: dbUri,
+  type: (configVals.FEED_REQUESTS_DB_TYPE || 'postgresql') as Options['type'],
   forceUtcTimezone: true,
   timezone: 'UTC',
   dbName,
