@@ -95,6 +95,7 @@ services:
       feed-requests-postgres-db:
         condition: service_started
     environment:
+      - FEED_REQUESTS_DB_TYPE=${FEED_REQUESTS_DB_TYPE:-postgresql}
       - FEED_REQUESTS_POSTGRES_URI=${FEED_REQUESTS_POSTGRES_URI:-postgres://postgres:postgres@feed-requests-postgres-db:5432/feedrequests}
       - FEED_REQUESTS_POSTGRES_SCHEMA=${FEED_REQUESTS_POSTGRES_SCHEMA:-feedrequests}
       - FEED_REQUESTS_API_KEY=${FEED_REQUESTS_API_KEY:-feed-requests-api-key}
@@ -126,6 +127,7 @@ services:
       rabbitmq-broker:
         condition: service_healthy
     environment:
+      - FEED_REQUESTS_DB_TYPE=${FEED_REQUESTS_DB_TYPE:-postgresql}
       - FEED_REQUESTS_POSTGRES_URI=${FEED_REQUESTS_POSTGRES_URI:-postgres://postgres:postgres@feed-requests-postgres-db:5432/feedrequests}
       - FEED_REQUESTS_POSTGRES_SCHEMA=${FEED_REQUESTS_POSTGRES_SCHEMA:-feedrequests}
       - FEED_REQUESTS_API_KEY=${FEED_REQUESTS_API_KEY:-feed-requests-api-key}
@@ -153,6 +155,7 @@ services:
       timeout: 5s
       retries: 3
     environment:
+      - USER_FEEDS_DB_TYPE=${USER_FEEDS_DB_TYPE:-postgresql}
       - USER_FEEDS_POSTGRES_URI=${USER_FEEDS_POSTGRES_URI:-postgres://postgres:postgres@feed-requests-postgres-db:5432}
       - USER_FEEDS_POSTGRES_SCHEMA=${USER_FEEDS_POSTGRES_SCHEMA:-userfeeds}
       - USER_FEEDS_DISCORD_RABBITMQ_URI=${USER_FEEDS_DISCORD_RABBITMQ_URI:-amqp://rabbitmq-broker:5672}
@@ -179,6 +182,7 @@ services:
     depends_on:
       - feed-requests-postgres-db
     environment:
+      - USER_FEEDS_DB_TYPE=${USER_FEEDS_DB_TYPE:-postgresql}
       - USER_FEEDS_POSTGRES_URI=${USER_FEEDS_POSTGRES_URI:-postgres://postgres:postgres@feed-requests-postgres-db:5432}
       - USER_FEEDS_POSTGRES_SCHEMA=${USER_FEEDS_POSTGRES_SCHEMA:-userfeeds}
       - USER_FEEDS_DISCORD_RABBITMQ_URI=${USER_FEEDS_DISCORD_RABBITMQ_URI:-amqp://rabbitmq-broker:5672}

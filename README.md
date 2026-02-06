@@ -50,6 +50,31 @@ Docker is required to easily coordinate and run multiple services at once.
    - If any containers are failing to start, troubleshoot by getting the last few logs for the container with `docker logs <container_name or ID> --tail 100`
 8. Access the control panel via http://localhost:8000
 
+#### Optional: Use MariaDB for feed-requests
+
+The feed-requests service can use MariaDB as a lighter database. The user-feeds-next service still requires PostgreSQL today, so keep the Postgres container running for that service. To enable MariaDB for feed-requests:
+
+1. Create a copy of the existing `.env.example` file and rename it to `.env` if you have not already.
+2. (Optional) Set MariaDB credentials in `.env`:
+   - `MARIADB_ROOT_PASSWORD`
+   - `MARIADB_USER`
+   - `MARIADB_PASSWORD`
+3. Start Docker with the MariaDB override file:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.mariadb.yml up -d
+```
+
+This override sets `FEED_REQUESTS_DB_TYPE=mariadb` and points `FEED_REQUESTS_POSTGRES_URI` at the MariaDB container while leaving PostgreSQL in place for user-feeds-next.
+
+#### Raspberry Pi notes
+
+MonitoRSS works on 64-bit Raspberry Pi OS (Bookworm) with Docker. A few tips for smoother installs:
+
+1. Use a 64-bit OS and Docker Engine for ARM64.
+2. If builds are slow, add swap (or a larger swapfile) before building images.
+3. Use the same compose commands as above; Docker images in the compose files are multi-arch and pull ARM64 variants automatically.
+
 #### Customize Site Domain
 
 1. Set up your domain to point to the server running the control panel on localhost

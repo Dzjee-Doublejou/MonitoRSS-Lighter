@@ -36,6 +36,19 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
       - ./sql/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+  mrss-mariadb:
+    container_name: mrss-mariadb-container
+    restart: always
+    image: mariadb:11.4
+    environment:
+      - MARIADB_ROOT_PASSWORD=monitorss
+      - MARIADB_USER=monitorss
+      - MARIADB_PASSWORD=monitorss
+      - MARIADB_DATABASE=feedfetcher
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-mariadb:/var/lib/mysql
   mrss-service:
     container_name: mrss-service-container
     restart: on-failure:3
@@ -55,6 +68,7 @@ services:
     env_file:
       - .env.local
     environment:
+      - FEED_REQUESTS_DB_TYPE=${FEED_REQUESTS_DB_TYPE:-postgresql}
       - FEED_REQUESTS_POSTGRES_URI=postgres://postgres:postgres@mrss-postgres:5432/feedfetcher
       - FEED_REQUESTS_MAX_FAIL_ATTEMPTS=11
       - FEED_REQUESTS_API_PORT=5000
@@ -65,4 +79,6 @@ services:
 volumes:
   db-mongodb-data:
   db:
+    driver: local
+  db-mariadb:
     driver: local

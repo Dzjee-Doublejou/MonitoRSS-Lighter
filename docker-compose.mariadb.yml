@@ -1,0 +1,26 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:-monitorss}
+      - MARIADB_USER=${MARIADB_USER:-monitorss}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD:-monitorss}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./mariadb-init:/docker-entrypoint-initdb.d
+    networks:
+      - monitorss-default
+
+  feed-requests-service:
+    environment:
+      - FEED_REQUESTS_DB_TYPE=mariadb
+      - FEED_REQUESTS_POSTGRES_URI=mariadb://${MARIADB_USER:-monitorss}:${MARIADB_PASSWORD:-monitorss}@mariadb:3306/feedrequests
+
+  feed-requests-postgres-migration:
+    environment:
+      - FEED_REQUESTS_DB_TYPE=mariadb
+      - FEED_REQUESTS_POSTGRES_URI=mariadb://${MARIADB_USER:-monitorss}:${MARIADB_PASSWORD:-monitorss}@mariadb:3306/feedrequests
+
+volumes:
+  mariadb-data:

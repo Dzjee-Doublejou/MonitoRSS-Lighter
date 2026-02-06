@@ -41,6 +41,7 @@ export function config(options?: {
     USER_FEEDS_FEED_REQUESTS_API_KEY: process.env
       .USER_FEEDS_FEED_REQUESTS_API_KEY as string,
     USER_FEEDS_POSTGRES_URI: process.env.USER_FEEDS_POSTGRES_URI as string,
+    USER_FEEDS_DB_TYPE: process.env.USER_FEEDS_DB_TYPE as string,
     USER_FEEDS_POSTGRES_DATABASE: process.env
       .USER_FEEDS_POSTGRES_DATABASE as string,
     USER_FEEDS_DISCORD_CLIENT_ID: process.env

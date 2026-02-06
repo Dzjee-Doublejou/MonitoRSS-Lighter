@@ -31,6 +31,7 @@ export default function config(): EnvironmentVariables {
     FEED_REQUESTS_API_KEY: process.env.FEED_REQUESTS_API_KEY as string,
     FEED_REQUESTS_POSTGRES_URI: process.env
       .FEED_REQUESTS_POSTGRES_URI as string,
+    FEED_REQUESTS_DB_TYPE: process.env.FEED_REQUESTS_DB_TYPE as string,
     FEED_REQUESTS_DATADOG_API_KEY: process.env
       .FEED_REQUESTS_DATADOG_API_KEY as string,
     FEED_REQUESTS_SYNC_DB: process.env.FEED_REQUESTS_SYNC_DB === 'true',
